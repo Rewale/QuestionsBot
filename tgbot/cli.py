@@ -32,7 +32,6 @@ async def main():
         host=config.db.host,
         echo=False,
     )
-
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher(bot, storage=storage)
     dp.middleware.setup(DbMiddleware(pool))

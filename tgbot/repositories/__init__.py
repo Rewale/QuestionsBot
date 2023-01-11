@@ -2,6 +2,7 @@ import datetime
 from abc import ABC, abstractmethod
 
 from tgbot.models.dto import User, Question, Message
+from tgbot.models.role import UserRole
 
 
 class UserRepo(ABC):
@@ -30,7 +31,7 @@ class UserInfoRepo(ABC):
 
 class JobTitleRepo(ABC):
     @abstractmethod
-    async def submit_job_title(self, job_title: str) -> bool:
+    async def submit_job_title(self, job_title: str) -> UserRole:
         """ Сравнение должности со списком """
         pass
 
@@ -54,7 +55,7 @@ class QuestionRepo(ABC):
 
 class MessagesRepo(ABC):
     @abstractmethod
-    async def create_message(self, from_tg_id: int, text: str, question: User, at: datetime.datetime = None) -> Message:
+    async def create_message(self, message: Message) -> Message:
         pass
 
     @abstractmethod
@@ -66,3 +67,19 @@ class MarkRepo(ABC):
     @abstractmethod
     async def set_mark(self, helpfully: bool, question: Question):
         pass
+
+
+class Repo:
+    def __init__(self, message_repo: MessagesRepo,
+                 mark_repo: MarkRepo,
+                 question_repo: QuestionRepo,
+                 user_repo: UserRepo,
+                 user_info_repo: UserInfoRepo,
+                 job_title: JobTitleRepo):
+        self.mark = mark_repo
+        self.message = message_repo
+        self.question_repo = question_repo
+        self.job_title = job_title
+        self.user = user_repo
+        self.user_info = user_info_repo
+
