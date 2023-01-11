@@ -8,16 +8,20 @@ from tgbot.models.role import UserRole
 
 
 @dataclass
-class User:
-    id: str | int | None
-    role: UserRole
+class UserInfo:
     name: str
     surname: str
     patronymic: str | None
-    leader: User | None
+    subdivision: str
     job_title: str
+
+
+@dataclass
+class User(UserInfo):
+    id: str | int | None
+    role: UserRole
+    leader: User | None
     telegram_id: int
-    subdivision: Any
     blocked: bool = False
 
 

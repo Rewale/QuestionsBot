@@ -45,9 +45,9 @@ class EmailConfig:
 class Config:
     tg_bot: TgBot
     db: DbConfig
-    misc: Miscellaneous
-    notification: NotificationConfig
-    email: EmailConfig
+    # misc: Miscellaneous
+    # notification: NotificationConfig
+    # email: EmailConfig
 
 
 def load_config(path: str = None):
