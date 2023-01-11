@@ -1,7 +1,7 @@
 import datetime
 import functools
 from abc import ABC
-from typing import Callable
+from typing import Callable, Optional
 
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
@@ -29,8 +29,8 @@ class MessagesMongoRepo(MessagesRepo, MongoRepo):
 
 def return_user(func: Callable):
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        user = func(*args, **kwargs)
+    async def wrapper(*args, **kwargs):
+        user = await func(*args, **kwargs)
         user['id'] = user['_id']
         del user['_id']
         return User(**user)
@@ -42,9 +42,10 @@ class UserMongoRepo(UserRepo, MongoRepo):
     def __init__(self, db: AsyncIOMotorDatabase, collection_name="users"):
         super().__init__(db, collection_name)
 
-    @return_user
-    async def get_user(self, fio: str) -> User:
-        user = await self.collection.find_one({'fio': fio})
+    async def get_user(self, tg_id: int) -> Optional[User]:
+        user = await self.collection.find_one({'telegram_id': tg_id})
+        if not user:
+            return None
         user['id'] = user['_id']
         del user['_id']
         return User(**user)

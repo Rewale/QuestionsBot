@@ -39,18 +39,18 @@ async def main():
         storage = MemoryStorage()
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher(bot, storage=storage)
-    registry = DialogRegistry(dp)
-    register_all_dialogs(registry)
 
     mongo_db = await create_mongo_connect_db(config.db.host, config.db.port)
     repo = create_repo_ad_sos_pg(mongo_db, '', '')
     bot['repo'] = repo
-    dp.middleware.setup(RoleMiddleware(config.tg_bot.admin_ids))
+    dp.middleware.setup(RoleMiddleware(config.tg_bot.admin_ids, repo))
     dp.filters_factory.bind(RoleFilter)
     dp.filters_factory.bind(AdminFilter)
 
     register_admin(dp)
     register_user(dp)
+    registry = DialogRegistry(dp)
+    register_all_dialogs(registry)
 
     # start
     try:

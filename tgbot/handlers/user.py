@@ -10,4 +10,4 @@ async def user_start(m: Message, dialog_manager: DialogManager):
 
 
 def register_user(dp: Dispatcher):
-    dp.register_message_handler(user_start, commands=["start"], state="*")
+    dp.register_message_handler(user_start, commands=["start"], state="*", role=None)

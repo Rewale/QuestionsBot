@@ -7,7 +7,7 @@ from tgbot.models.role import UserRole
 
 class UserRepo(ABC):
     @abstractmethod
-    async def get_user(self, fio: str) -> User:
+    async def get_user(self, tg_id: int) -> User:
         pass
 
     @abstractmethod
@@ -82,4 +82,3 @@ class Repo:
         self.job_title = job_title
         self.user = user_repo
         self.user_info = user_info_repo
-
