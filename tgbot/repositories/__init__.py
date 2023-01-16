@@ -1,7 +1,7 @@
 import datetime
 from abc import ABC, abstractmethod
 
-from tgbot.models.dto import User, Question, Message
+from tgbot.models.dto import User, Question, Message, UserInfo
 from tgbot.models.role import UserRole
 
 
@@ -25,7 +25,7 @@ class UserRepo(ABC):
 
 class UserInfoRepo(ABC):
     @abstractmethod
-    async def get_info(self, phone: str) -> User:
+    async def get_info(self, phone: str) -> UserInfo:
         pass
 
 

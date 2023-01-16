@@ -14,7 +14,7 @@ from tgbot.handlers.dialogs.registration.dialogs import registration_dialog
 from tgbot.handlers.user import register_user
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.role import RoleMiddleware
-from tgbot.repositories.fabric import create_repo_ad_sos_pg
+from tgbot.repositories.fabric import create_repo_ad_sos_pg, create_repo_mock_services
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 async def create_mongo_connect_db(host, port, database_name: str = "work_db"):
     client = motor.motor_asyncio.AsyncIOMotorClient(host, port)
     await client.server_info()
+    logger.info("CONNECT TO MONGO")
     db = client[database_name]
 
     return db
@@ -41,7 +42,7 @@ async def main():
     dp = Dispatcher(bot, storage=storage)
 
     mongo_db = await create_mongo_connect_db(config.db.host, config.db.port)
-    repo = create_repo_ad_sos_pg(mongo_db, '', '')
+    repo = create_repo_mock_services(mongo_db)
     bot['repo'] = repo
     dp.middleware.setup(RoleMiddleware(config.tg_bot.admin_ids, repo))
     dp.filters_factory.bind(RoleFilter)
@@ -54,6 +55,7 @@ async def main():
 
     # start
     try:
+        logger.info("BOT STARTED")
         await dp.start_polling()
     finally:
         await dp.storage.close()

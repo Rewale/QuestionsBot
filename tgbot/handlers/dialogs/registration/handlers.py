@@ -14,7 +14,7 @@ async def start_reg(c: CallbackQuery, button: Button, manager: DialogManager):
 
 
 async def enter_phone(m: Message, proto, manager: DialogManager):
-    phone = m.text
+    phone = m.contact.phone_number
     if not re.match(r'^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$', phone):
         await m.reply("Неверный формат номера телефона")
         await manager.switch_to(RegistrationSG.phone)

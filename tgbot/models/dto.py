@@ -18,11 +18,10 @@ class UserInfo:
 
 @dataclass
 class User(UserInfo):
-    id: str | int | None
     role: UserRole
-    leader: User | None
     telegram_id: int
     blocked: bool = False
+    leader: User | None = None
 
 
 @dataclass

@@ -1,3 +1,5 @@
+from aiogram import types
+from aiogram.dispatcher.filters import ContentTypeFilter
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.input import MessageInput
 from aiogram_dialog.widgets.kbd import Button
@@ -15,8 +17,8 @@ registration_dialog = Dialog(
         state=RegistrationSG.start
     ),
     Window(
-        Const('Введите номер телефона:'),
-        MessageInput(enter_phone),
+        Const('Отправьте свой номер телефона'),
+        MessageInput(enter_phone, content_types=types.ContentTypes.CONTACT),
         state=RegistrationSG.phone
     ),
     Window(
